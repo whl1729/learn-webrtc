@@ -25,16 +25,9 @@ var answer =
   document.querySelector('textarea#answer');
 
 var pcConfig = {
-  'iceServers': [{
-    //TURN 服务器地址
-    'urls': 'turn:xxx.avdancedu.com:3478',
-    //TURN 服务器用户名
-    'username': "xxx",
-    //TURN 服务器密码
-    'credential': "xxx"
-  }],
-  // 默认使用relay 方式传输数据
-  "iceTransportPolicy": "relay",
+  // 局域网内可直接使用 host candidates 建立连接。跨公网时请配置真实 TURN。
+  'iceServers': [],
+  "iceTransportPolicy": "all",
   "iceCandidatePoolSize": "0"
 };
 
@@ -151,7 +144,7 @@ function conn() {
     /**
     * 如果是Mesh 方案， 第一个人不该在这里创建
     * peerConnection ， 而是要等到所有端都收到
-    * 一个'otherjoin' 消息时再创建
+    * 一个'other_join' 消息时再创建
     */
 
     // 创建PeerConnection 并绑定音视频轨
@@ -164,8 +157,8 @@ function conn() {
     console.log('receive joined message , state=', state);
   });
 
-  // otherjoin 消息处理函数
-  socket.on('otherjoin', (roomid) => {
+  // other_join 消息处理函数
+  socket.on('other_join', (roomid) => {
     console.log('receive joined message:', roomid, state);
 
     // 如果是多人， 每加入一个人都要创建一个新的PeerConnection
@@ -334,6 +327,12 @@ function connSignalServer() {
  */
 function getMediaStream(stream) {
 
+  if (!localVideo) {
+    console.error('Local video element #localvideo was not found.');
+    stream.getTracks().forEach((track) => track.stop());
+    return;
+  }
+
   // 将从设备上获取到的音视频track 添加到localStream 中
   if (localStream) {
     stream.getAudioTracks().forEach((track) => {
@@ -487,9 +486,9 @@ function createPeerConnection() {
         // 将Candidate 发送给对端
         sendMessage(roomid, {
           type: 'candidate',
-          label: event.candidate.sdpMLineIndex,
-          id: event.candidate.sdpMid,
-          candidate: event.candidate.candidate
+          label: e.candidate.sdpMLineIndex,
+          id: e.candidate.sdpMid,
+          candidate: e.candidate.candidate
         });
       } else {
         console.log('this is the end candidate');

@@ -2,6 +2,7 @@
 
 <head>
   <title>WebRTC PeerConnection </title>
+  <link rel="icon" href="data:," />
   <link href="./css/client.css" rel="stylesheet" />
 </head>
 
@@ -24,7 +25,7 @@
     <div id="preview">
       <!--
             本地视频与Offer 的展示区
--      ->
+      -->
       <div>
             <h>Local:</h>
             <video id="localvideo" autoplay playsinline muted></video>
@@ -46,12 +47,9 @@
   <!--
             引用的JavaScript 脚本库：
             socket.io.js ： 用于连接信令服务器
-            adapter-latest.js ： 用于浏览器适配Chrome , Firefox …
             client.js ： WebRTC 客户端代码
       -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js">
-  </script>
-  <script src="https://webrtc.github.io/adapter/adapter-latest.js">
+  <script src="/socket.io/socket.io.js">
   </script>
   <script src="js/client.js">
   </script>

@@ -13,3 +13,10 @@ node sigserver.js
 ```
 
 浏览器会提示该自签名证书不受信任，开发环境中选择继续访问即可。
+
+启动后通过 `https://localhost/room.html?room=test` 打开示例页面。不要直接双击
+`ch05/room.html`，因为浏览器会以 `file://` 打开页面，无法加载 Socket.IO。
+
+如果第二台电脑访问，请把 `localhost` 换成运行信令服务器电脑的局域网 IP，
+例如 `https://192.168.1.10/room.html?room=test`；两台电脑必须使用相同的
+`room` 值。局域网连接不需要 TURN，跨公网连接则必须填写可用的 TURN 服务器。

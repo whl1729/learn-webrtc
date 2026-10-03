@@ -39,6 +39,8 @@ var logger = log4js.getLogger();
 var app = express();
 app.use(serveIndex('./public'));
 app.use(express.static('./public'));
+// Serve the WebRTC demo page so it runs on the same origin as Socket.IO.
+app.use(express.static('../ch05'));
 
 // 设置跨域访问
 app.use(function (req, res, next) {
